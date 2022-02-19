@@ -4,12 +4,14 @@
 
 .city-form__input {
   line-height: 1.5rem;
-  padding: 0;
+  padding: 0 0.375rem;
+  font-family: "Lucida Grande", "Lucida Sans Unicode", "DejaVu Sans", "Bitstream Vera Sans", "Liberation Sans", Verdana, "Verdana Ref", sans-serif;
+  font-size: 0.875rem;
   width: 100%;
   border: none;
   outline: none;
 }
 
 .city-form__input:focus {
-  box-shadow: 0 0 2px cyan;
+  background-color: lightcyan;
 }

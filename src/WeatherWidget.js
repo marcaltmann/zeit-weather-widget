@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { MdMyLocation } from 'react-icons/md';
 
 import CityForm from './CityForm';
 import useWeatherData from './useWeatherData';
@@ -65,21 +66,24 @@ export default function WeatherWidget({
                                 handleCityChange(name);
                                 setShowForm(false);
                             }}
-                            onCancel={() => setShowForm(false)}
+                            onCancel={() => setShowForm(true)}
                         />
                     ) : (
                         <div className="weather__city">
-                            <p
-                                className="weather__text weather__text--detail"
-                                onClick={() => setShowForm(true)}
-                            >
-                                {data.name}
-                            </p>
                             <button
                                 type="button"
                                 className="weather__location"
+                                onClick={() => setShowForm(true)}
+                            >
+                                {data.name}
+                            </button>
+                            <button
+                                type="button"
+                                className="weather__my-location"
                                 onClick={setNewCoords}
-                            />
+                            >
+                                <MdMyLocation />
+                            </button>
                         </div>
                     )
                 }
