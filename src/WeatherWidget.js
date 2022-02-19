@@ -1,11 +1,25 @@
-import useWeatherData from './useWeatherData';
+import PropTypes from 'prop-types';
 
+import useWeatherData from './useWeatherData';
 import './weather-widget.css';
 
-const coords = [53.550556, 9.993333];  // Hamburg
+export default function WeatherWidget({
+    lat,
+    lon,
+    onCoordsChange,
+}) {
+    const { isLoading, error, data } = useWeatherData(lat, lon);
 
-export default function WeatherWidget() {
-    const { isLoading, error, data } = useWeatherData(coords[0], coords[1]);
+    function setNewCoords() {
+        navigator.geolocation.getCurrentPosition(position => {
+            const coords = [
+                position.coords.latitude,
+                position.coords.longitude,
+            ];
+            console.log(coords);
+            onCoordsChange(coords);
+        }, error => console.log(error));
+    }
 
     if (isLoading) {
         return <article className="weather">Loading...</article>;
@@ -35,6 +49,18 @@ export default function WeatherWidget() {
                 <p className="weather__text weather__text--large">{Math.round(data.main.temp)}°</p>
                 <p className="weather__text weather__text--detail">{data.name}</p>
             </div>
+            <button
+                type="button"
+                onClick={setNewCoords}
+            >
+                x
+            </button>
         </article>
     );
 }
+
+WeatherWidget.propTypes = {
+    lat: PropTypes.number.isRequired,
+    lon: PropTypes.number.isRequired,
+    onCoordsChange: PropTypes.func.isRequired,
+};
