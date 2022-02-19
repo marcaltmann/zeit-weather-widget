@@ -26,8 +26,6 @@ export default function WeatherWidget({
     }
 
     async function handleCityChange(name) {
-        console.log(name);
-
         const coords = await fetchCity(name);
         if (coords) {
             onCoordsChange(coords);
