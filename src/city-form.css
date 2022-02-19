@@ -1,5 +1,6 @@
 .city-form {
   box-sizing: border-box;
+  color-scheme: light;
 }
 
 .city-form__input {
@@ -13,5 +14,9 @@
 }
 
 .city-form__input:focus {
-  background-color: lightcyan;
+  background-color: var(--input-background-color);
+}
+
+.color-scheme-dark .city-form {
+  color-scheme: dark;
 }

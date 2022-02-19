@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { MdMyLocation } from 'react-icons/md';
+import { Helmet } from 'react-helmet';
+import classNames from 'classnames';
 
 import CityForm from './CityForm';
 import useWeatherData from './useWeatherData';
 import fetchCity from './fetchCity';
+import isNightTime from './isNightTime';
 import './weather-widget.css';
 
 export default function WeatherWidget({
@@ -13,8 +16,9 @@ export default function WeatherWidget({
     onCoordsChange,
 }) {
     const [showForm, setShowForm] = useState(false);
-
     const { isLoading, error, data } = useWeatherData(lat, lon);
+
+    const nightTime = isNightTime();
 
     function setNewCoords() {
         navigator.geolocation.getCurrentPosition(position => {
@@ -47,10 +51,11 @@ export default function WeatherWidget({
         );
     }
 
-    // TODO: dynamic weather stuff
-
     return (
         <article className="weather">
+            <Helmet>
+                <html className={classNames({ 'color-scheme-dark': nightTime })} />
+            </Helmet>
             <img
                 className="weather__img"
                 src={`http://openweathermap.org/img/wn/${data.icon}@2x.png`}
@@ -66,7 +71,7 @@ export default function WeatherWidget({
                                 handleCityChange(data.name);
                                 setShowForm(false);
                             }}
-                            onCancel={() => setShowForm(true)}
+                            onCancel={() => setShowForm(false)}
                         />
                     ) : (
                         <div className="weather__city">

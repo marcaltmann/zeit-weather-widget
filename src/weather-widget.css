@@ -1,10 +1,10 @@
 .weather {
-  background-color: white;
+  background-color: var(--background-color);
   border-radius: 5px;
-  border: 1px solid gray;
+  border: 1px solid var(--detail-color);
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
-  color: black;
+  color: var(--text-color);
   display: flex;
   font-family: "Lucida Grande", "Lucida Sans Unicode", "DejaVu Sans", "Bitstream Vera Sans", "Liberation Sans", Verdana, "Verdana Ref", sans-serif;
   font-size: 0.875rem;
@@ -43,13 +43,13 @@
 }
 
 .weather__text--detail {
-  color: gray;
+  color: var(--detail-color);
 }
 
 .weather__location {
   background-color: transparent;
   border: none;
-  color: gray;
+  color: var(--detail-color);
   cursor: pointer;
   font-family: inherit;
   font-size: inherit;
@@ -59,12 +59,12 @@
 .weather__my-location {
   background-color: transparent;
   border: none;
-  color: gray;
+  color: var(--detail-color);
   cursor: pointer;
   transition: color 125ms;
 }
 
 .weather__location:hover,
 .weather__my-location:hover {
-  color: darkcyan;
+  color: var(--hover-color);
 }
