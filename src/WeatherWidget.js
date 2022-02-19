@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import CityForm from './CityForm';
 import useWeatherData from './useWeatherData';
 import fetchCity from './fetchCity';
-import isNightTime from './isNightTime';
+import isDayTime from './isDayTime';
 import './weather-widget.css';
 
 export default function WeatherWidget({
@@ -17,8 +17,6 @@ export default function WeatherWidget({
 }) {
     const [showForm, setShowForm] = useState(false);
     const { isLoading, error, data } = useWeatherData(lat, lon);
-
-    const nightTime = isNightTime();
 
     function setNewCoords() {
         navigator.geolocation.getCurrentPosition(position => {
@@ -51,10 +49,12 @@ export default function WeatherWidget({
         );
     }
 
+    const isNightTime = !isDayTime(data.sunrise, data.sunset);
+
     return (
         <article className="weather">
             <Helmet>
-                <html className={classNames({ 'color-scheme-dark': nightTime })} />
+                <html className={classNames({ 'color-scheme-dark': isNightTime })} />
             </Helmet>
             <img
                 className="weather__img"

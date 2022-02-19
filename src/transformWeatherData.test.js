@@ -52,6 +52,8 @@ test('transforms API data into our own data format', () => {
         icon: '03d',
         temp: 7,
         city: 'Alt-Kölln',
+        sunrise: 1645251310000,
+        sunset: 1645287945000,
     };
 
     expect(actual).toEqual(expected);

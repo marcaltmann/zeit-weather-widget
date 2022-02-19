@@ -8,5 +8,7 @@ export default function transformWeatherData(apiData) {
         icon: apiData.weather[0].icon,
         temp: Math.round(apiData.main.temp),
         city: apiData.name,
+        sunrise: apiData.sys.sunrise * 1000,
+        sunset: apiData.sys.sunset * 1000,
     };
 }
