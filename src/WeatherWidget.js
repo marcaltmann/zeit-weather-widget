@@ -1,44 +1,15 @@
-import { useState, useEffect } from 'react';
+import useWeatherData from './useWeatherData';
 
 import './weather-widget.css';
 
-const endpoint = 'https://api.openweathermap.org/data/2.5/weather';
-const apiKey = '***REMOVED***';
-
-const REFRESH_INTERVAL = 60;
+const coords = [53.550556, 9.993333];  // Hamburg
 
 export default function WeatherWidget() {
-    const coords = [53.550556, 9.993333];  // Hamburg
+    const { isLoading, error, data } = useWeatherData(coords[0], coords[1]);
 
-    const [data, setData] = useState(null);
-    const [error, setError] = useState(null);
-
-    async function fetchWeatherData() {
-        const url = `${endpoint}?lat=${coords[0]}&lon=${coords[1]}&units=metric&lang=de&appid=${apiKey}`;
-
-        const response = await fetch(url);
-
-        if (response.ok) {
-            const weatherData = await response.json();
-            setData(weatherData);
-            setError(null);
-        } else {
-            setData(null);
-            setError(response.statusText);
-        }
+    if (isLoading) {
+        return <article className="weather">Loading...</article>;
     }
-
-    useEffect(() => {
-        fetchWeatherData();
-
-        const interval = setInterval(() => {
-            fetchWeatherData();
-        }, REFRESH_INTERVAL * 1000);
-
-        return () => {
-            clearInterval(interval);
-        }
-    }, []);
 
     if (error) {
         return (
@@ -50,12 +21,7 @@ export default function WeatherWidget() {
         );
     }
 
-    if (!data) {
-        return <article className="weather">Loading...</article>;
-    }
-
     // TODO: dynamic weather stuff
-
 
     return (
         <article className="weather">
