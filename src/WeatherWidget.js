@@ -54,11 +54,14 @@ export default function WeatherWidget() {
         return <article className="weather">Loading...</article>;
     }
 
+    // TODO: dynamic weather stuff
+
+
     return (
         <article className="weather">
             <img
                 className="weather__img"
-                src="http://openweathermap.org/img/wn/04n@2x.png"
+                src={`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
                 alt=""
             />
             <div className="weather__body">
