@@ -53,17 +53,17 @@ export default function WeatherWidget({
         <article className="weather">
             <img
                 className="weather__img"
-                src={`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
+                src={`http://openweathermap.org/img/wn/${data.icon}@2x.png`}
                 alt=""
             />
             <div className="weather__body">
-                <p className="weather__text">{data.weather[0].description}</p>
-                <p className="weather__text weather__text--large">{Math.round(data.main.temp)}°</p>
+                <p className="weather__text">{data.description}</p>
+                <p className="weather__text weather__text--large">{data.temp}°</p>
                 {
                     showForm ? (
                         <CityForm
                             onSubmit={name => {
-                                handleCityChange(name);
+                                handleCityChange(data.name);
                                 setShowForm(false);
                             }}
                             onCancel={() => setShowForm(true)}
@@ -75,7 +75,7 @@ export default function WeatherWidget({
                                 className="weather__location"
                                 onClick={() => setShowForm(true)}
                             >
-                                {data.name}
+                                {data.city}
                             </button>
                             <button
                                 type="button"

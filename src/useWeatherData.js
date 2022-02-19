@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 
+import transformWeatherData from './transformWeatherData';
+
 const endpoint = 'https://api.openweathermap.org/data/2.5/weather';
 const apiKey = '***REMOVED***';
 
@@ -36,9 +38,11 @@ export default function useWeatherData(lat, lon) {
         }
     }, [lat, lon]);
 
+    const selectedData = data ? transformWeatherData(data) : null;
+
     return {
         isLoading: !data && !error,
         error,
-        data,
+        data: selectedData,
     };
 }
