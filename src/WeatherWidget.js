@@ -68,7 +68,7 @@ export default function WeatherWidget({
                     showForm ? (
                         <CityForm
                             onSubmit={name => {
-                                handleCityChange(data.name);
+                                handleCityChange(name);
                                 setShowForm(false);
                             }}
                             onCancel={() => setShowForm(false)}
