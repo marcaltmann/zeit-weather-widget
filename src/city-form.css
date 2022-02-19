@@ -1,0 +1,15 @@
+.city-form {
+  box-sizing: border-box;
+}
+
+.city-form__input {
+  line-height: 1.5rem;
+  padding: 0;
+  width: 100%;
+  border: none;
+  outline: none;
+}
+
+.city-form__input:focus {
+  box-shadow: 0 0 2px cyan;
+}

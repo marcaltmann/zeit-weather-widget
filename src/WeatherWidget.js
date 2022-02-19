@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import CityForm from './CityForm';
 import useWeatherData from './useWeatherData';
 import fetchCity from './fetchCity';
 import './weather-widget.css';
@@ -10,7 +11,7 @@ export default function WeatherWidget({
     lon,
     onCoordsChange,
 }) {
-    const [city, setCity] = useState('');
+    const [showForm, setShowForm] = useState(false);
 
     const { isLoading, error, data } = useWeatherData(lat, lon);
 
@@ -24,18 +25,12 @@ export default function WeatherWidget({
         }, error => console.log(error));
     }
 
-    async function handleFormSubmit(event) {
-        event.preventDefault();
+    async function handleCityChange(name) {
+        console.log(name);
 
-        const form = event.target;
-        const input = form.elements[0];
-        const value = input.value;
-        console.log(input, value);
-
-        const coords = await fetchCity(value.trim());
+        const coords = await fetchCity(name);
         if (coords) {
             onCoordsChange(coords);
-            input.value = '';
         }
     }
 
@@ -65,19 +60,31 @@ export default function WeatherWidget({
             <div className="weather__body">
                 <p className="weather__text">{data.weather[0].description}</p>
                 <p className="weather__text weather__text--large">{Math.round(data.main.temp)}°</p>
-                <p className="weather__text weather__text--detail">
-                    <button
-                        type="button"
-                        onClick={setNewCoords}
-                    >
-                        x
-                    </button>
-                    {data.name}
-                </p>
-                <form onSubmit={handleFormSubmit}>
-                    <input placeholder="Stadt eingeben" />
-                    <button type="submit">Absenden</button>
-                </form>
+                {
+                    showForm ? (
+                        <CityForm
+                            onSubmit={name => {
+                                handleCityChange(name);
+                                setShowForm(false);
+                            }}
+                            onCancel={() => setShowForm(false)}
+                        />
+                    ) : (
+                        <div className="weather__city">
+                            <p
+                                className="weather__text weather__text--detail"
+                                onClick={() => setShowForm(true)}
+                            >
+                                {data.name}
+                            </p>
+                            <button
+                                type="button"
+                                className="weather__location"
+                                onClick={setNewCoords}
+                            />
+                        </div>
+                    )
+                }
             </div>
         </article>
     );
