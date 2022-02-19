@@ -8,7 +8,7 @@
 }
 
 :root.color-scheme-dark {
-  --background-color: black;
+  --background-color: #121212;
   --text-color: white;
   --detail-color: lightgray;
   --hover-color: orange;
