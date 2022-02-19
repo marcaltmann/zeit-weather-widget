@@ -15,7 +15,7 @@ function App() {
     const [coords, setCoords] = useState(initialCoords);
 
     function handleCoordsChange(coords) {
-        //saveState('coords', coords);
+        saveState('coords', coords);
         setCoords(coords);
     }
 
