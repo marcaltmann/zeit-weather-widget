@@ -13,6 +13,10 @@
   outline: none;
 }
 
+.city-form__input::placeholder {
+  color: var(--input-placeholder-color);
+}
+
 .city-form__input:focus {
   background-color: var(--input-background-color);
 }
