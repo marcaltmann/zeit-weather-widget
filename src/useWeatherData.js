@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 import { fetchWeatherData } from './api';
 import transformWeatherData from './transformWeatherData';
@@ -9,17 +9,20 @@ export default function useWeatherData(lat, lon) {
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
 
-    async function fetchNewData() {
-        const result = await fetchWeatherData(lat, lon);
+    const fetchNewData = useCallback(
+        async function() {
+            const result = await fetchWeatherData(lat, lon);
 
-        if (result.data) {
-            setData(result.data);
-            setError(null);
-        } else {
-            setData(null);
-            setError(result.error);
-        }
-    }
+            if (result.data) {
+                setData(result.data);
+                setError(null);
+            } else {
+                setData(null);
+                setError(result.error);
+            }
+        },
+        [lat, lon]
+    );
 
     useEffect(() => {
         fetchNewData();
@@ -31,7 +34,7 @@ export default function useWeatherData(lat, lon) {
         return () => {
             clearInterval(interval);
         }
-    }, [lat, lon]);
+    }, [lat, lon, fetchNewData]);
 
     const selectedData = data ? transformWeatherData(data) : null;
 
