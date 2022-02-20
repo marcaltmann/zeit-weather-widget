@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { MdMyLocation } from 'react-icons/md';
 
 import CityForm from './CityForm';
-import './weather-widget.css';
+import './WeatherWidget.css';
 
 export default function WeatherWidget({
     isLoading,
@@ -15,13 +15,13 @@ export default function WeatherWidget({
     const [showForm, setShowForm] = useState(false);
 
     if (isLoading) {
-        return <article className="weather">Loading...</article>;
+        return <article className="weather-widget">Loading...</article>;
     }
 
     if (error) {
         return (
-            <article className="weather">
-                <p className="weather__text">
+            <article className="weather-widget">
+                <p className="weather-widget__text">
                     Error: {error}
                 </p>
             </article>
@@ -29,15 +29,15 @@ export default function WeatherWidget({
     }
 
     return (
-        <article className="weather">
+        <article className="weather-widget">
             <img
-                className="weather__img"
+                className="weather-widget__img"
                 src={data.iconUrl}
                 alt=""
             />
-            <div className="weather__body">
-                <p className="weather__text">{data.description}</p>
-                <p className="weather__text weather__text--large">{data.temp}°</p>
+            <div className="weather-widget__body">
+                <p className="weather-widget__text">{data.description}</p>
+                <p className="weather-widget__text weather-widget__text--large">{data.temp}°</p>
                 {
                     showForm ? (
                         <CityForm
@@ -48,17 +48,17 @@ export default function WeatherWidget({
                             onCancel={() => setShowForm(false)}
                         />
                     ) : (
-                        <div className="weather__city">
+                        <div className="weather-widget__city">
                             <button
                                 type="button"
-                                className="weather__location"
+                                className="weather-widget__location"
                                 onClick={() => setShowForm(true)}
                             >
                                 {data.city}
                             </button>
                             <button
                                 type="button"
-                                className="weather__my-location"
+                                className="weather-widget__my-location"
                                 onClick={onMyLocationClick}
                             >
                                 <MdMyLocation />

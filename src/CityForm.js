@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import './city-form.css';
+import './CityForm.css';
 
 export default function CityForm({
     onSubmit,
