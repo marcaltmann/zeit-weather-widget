@@ -5,7 +5,7 @@ export default function transformWeatherData(apiData) {
 
     return {
         description: apiData.weather[0].description,
-        icon: apiData.weather[0].icon,
+        iconUrl: `https://openweathermap.org/img/wn/${apiData.weather[0].icon}@2x.png`,
         temp: Math.round(apiData.main.temp),
         city: apiData.name,
         sunrise: apiData.sys.sunrise * 1000,

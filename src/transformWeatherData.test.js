@@ -49,7 +49,7 @@ test('transforms API data into our own data format', () => {
     const actual = transformWeatherData(apiData);
     const expected = {
         description: 'Mäßig bewölkt',
-        icon: '03d',
+        iconUrl: 'https://openweathermap.org/img/wn/03d@2x.png',
         temp: 7,
         city: 'Alt-Kölln',
         sunrise: 1645251310000,

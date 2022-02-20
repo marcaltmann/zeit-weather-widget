@@ -32,7 +32,7 @@ export default function WeatherWidget({
         <article className="weather">
             <img
                 className="weather__img"
-                src={`http://openweathermap.org/img/wn/${data.icon}@2x.png`}
+                src={data.iconUrl}
                 alt=""
             />
             <div className="weather__body">

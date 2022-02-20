@@ -1,4 +1,4 @@
-const API_KEY = '***REMOVED***';
+const API_KEY = process.env.REACT_APP_API_KEY;
 const DATA_ENDPOINT = 'https://api.openweathermap.org/data/2.5/weather';
 const GEOCODING_ENDPOINT = 'https://api.openweathermap.org/geo/1.0/direct';
 
