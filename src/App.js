@@ -1,8 +1,12 @@
 import { useState } from 'react';
+import { Helmet } from 'react-helmet';
+import classNames from 'classnames';
 
-import loadState from './persistence/loadState';
-import saveState from './persistence/saveState';
+import { loadState, saveState } from './persistence';
+import { fetchCity } from './api';
+import useWeatherData from './useWeatherData';
 import WeatherWidget from './WeatherWidget';
+import isDayTime from './isDayTime';
 import './App.css';
 
 let initialCoords = loadState('coords');
@@ -13,19 +17,48 @@ if (!initialCoords) {
 
 function App() {
     const [coords, setCoords] = useState(initialCoords);
+    const { isLoading, error, data } = useWeatherData(coords[0], coords[1]);
 
-    function handleCoordsChange(coords) {
-        saveState('coords', coords);
+    function saveNewCoords(coords) {
         setCoords(coords);
+        saveState('coords', coords);
+    }
+
+    function handleMyLocationClick() {
+        navigator.geolocation.getCurrentPosition(position => {
+            const coords = [
+                position.coords.latitude,
+                position.coords.longitude,
+            ];
+            saveNewCoords(coords);
+        }, error => console.log(error));
+    }
+
+    async function handleCityChange(name) {
+        const coords = await fetchCity(name);
+        if (coords) {
+            saveNewCoords(coords);
+        }
     }
 
     return (
         <div className="App">
+            {data && (
+                <Helmet>
+                    <html className={classNames({
+                        'color-scheme-dark': !isDayTime(data.sunrise, data.sunset),
+                        })}
+                    />
+                </Helmet>
+            )}
+
             <header className="App-header">
                 <WeatherWidget
-                    lat={coords[0]}
-                    lon={coords[1]}
-                    onCoordsChange={handleCoordsChange}
+                    isLoading={isLoading}
+                    error={error}
+                    data={data}
+                    onMyLocationClick={handleMyLocationClick}
+                    onCityChange={handleCityChange}
                 />
             </header>
         </div>

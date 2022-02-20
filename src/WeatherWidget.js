@@ -1,39 +1,18 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { MdMyLocation } from 'react-icons/md';
-import { Helmet } from 'react-helmet';
-import classNames from 'classnames';
 
 import CityForm from './CityForm';
-import useWeatherData from './useWeatherData';
-import fetchCity from './fetchCity';
-import isDayTime from './isDayTime';
 import './weather-widget.css';
 
 export default function WeatherWidget({
-    lat,
-    lon,
-    onCoordsChange,
+    isLoading,
+    error,
+    data,
+    onMyLocationClick,
+    onCityChange,
 }) {
     const [showForm, setShowForm] = useState(false);
-    const { isLoading, error, data } = useWeatherData(lat, lon);
-
-    function setNewCoords() {
-        navigator.geolocation.getCurrentPosition(position => {
-            const coords = [
-                position.coords.latitude,
-                position.coords.longitude,
-            ];
-            onCoordsChange(coords);
-        }, error => console.log(error));
-    }
-
-    async function handleCityChange(name) {
-        const coords = await fetchCity(name);
-        if (coords) {
-            onCoordsChange(coords);
-        }
-    }
 
     if (isLoading) {
         return <article className="weather">Loading...</article>;
@@ -49,13 +28,8 @@ export default function WeatherWidget({
         );
     }
 
-    const isNightTime = !isDayTime(data.sunrise, data.sunset);
-
     return (
         <article className="weather">
-            <Helmet>
-                <html className={classNames({ 'color-scheme-dark': isNightTime })} />
-            </Helmet>
             <img
                 className="weather__img"
                 src={`http://openweathermap.org/img/wn/${data.icon}@2x.png`}
@@ -68,7 +42,7 @@ export default function WeatherWidget({
                     showForm ? (
                         <CityForm
                             onSubmit={name => {
-                                handleCityChange(name);
+                                onCityChange(name);
                                 setShowForm(false);
                             }}
                             onCancel={() => setShowForm(false)}
@@ -85,7 +59,7 @@ export default function WeatherWidget({
                             <button
                                 type="button"
                                 className="weather__my-location"
-                                onClick={setNewCoords}
+                                onClick={onMyLocationClick}
                             >
                                 <MdMyLocation />
                             </button>
@@ -98,7 +72,9 @@ export default function WeatherWidget({
 }
 
 WeatherWidget.propTypes = {
-    lat: PropTypes.number.isRequired,
-    lon: PropTypes.number.isRequired,
-    onCoordsChange: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool,
+    error: PropTypes.string,
+    data: PropTypes.object,
+    onMyLocationClick: PropTypes.func.isRequired,
+    onCityChange: PropTypes.func.isRequired,
 };

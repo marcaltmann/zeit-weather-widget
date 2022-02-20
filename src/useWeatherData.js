@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 
+import { fetchWeatherData } from './api';
 import transformWeatherData from './transformWeatherData';
-
-const endpoint = 'https://api.openweathermap.org/data/2.5/weather';
-const apiKey = '***REMOVED***';
 
 const REFRESH_INTERVAL = 60;
 
@@ -11,23 +9,20 @@ export default function useWeatherData(lat, lon) {
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
 
-    async function fetchWeatherData() {
-        const url = `${endpoint}?lat=${lat}&lon=${lon}&units=metric&lang=de&appid=${apiKey}`;
+    async function fetchNewData() {
+        const result = await fetchWeatherData(lat, lon);
 
-        const response = await fetch(url);
-
-        if (response.ok) {
-            const weatherData = await response.json();
-            setData(weatherData);
+        if (result.data) {
+            setData(result.data);
             setError(null);
         } else {
             setData(null);
-            setError(response.statusText);
+            setError(result.error);
         }
     }
 
     useEffect(() => {
-        fetchWeatherData();
+        fetchNewData();
 
         const interval = setInterval(() => {
             fetchWeatherData();
